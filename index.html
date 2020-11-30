@@ -4,8 +4,7 @@
         <script type="text/javascript">
         var name1 = "";
         var name2 = "";
-        var flames = 'flames';
-        var finalChar = '';
+        var flames = "";
         function resetBadgeColor(){
             document.getElementById('friend').classList.remove("badge-success");
             document.getElementById('friend').classList.add("badge-secondary");
@@ -22,6 +21,7 @@
         }
         function calculateFlames() {
             resetBadgeColor();
+            flames = 'flames';
             name1 = document.getElementById('name1').value.toLowerCase().replace(/ /g,'');
             name2 = document.getElementById('name2').value.toLowerCase().replace(/ /g,'');;
             var totalChars = name1.length + name2.length;
@@ -37,14 +37,21 @@
             var uniqueChars = name1+name2;
             uniqueChars = uniqueChars.replace(/-/g,''); 
             var cutoffnumber = uniqueChars.length;
-            var deadLetter;
-            var tmpFlames = flames.repeat(26);
-            for(var i=0; i< flames.length -1; i++){
-                deadLetter = tmpFlames.charAt(cutoffnumber-1);
-                tmpFlames = tmpFlames.replace(new RegExp(deadLetter, "g"), "");
-                tmpFlames = tmpFlames.substring((cutoffnumber%flames.length)-1);
+            var removeChar = 0;
+            var firstHalf, secondHalf;
+            for (let index = 6; index > 1; index--) {
+                removeChar = cutoffnumber % flames.length;
+                if(removeChar > 0){
+                    firstHalf = flames.substring(0, removeChar -1);
+                    secondHalf = flames.substring(removeChar);
+                    flames = secondHalf + firstHalf;
+                } else {
+                    flames = flames.substring(0, flames.length -1);
+                }
+                
             }
-            switch (tmpFlames.charAt(0)) {
+
+            switch (flames.charAt(0)) {
                 case 'f':
                     document.getElementById('friend').classList.remove("badge-secondary");
                     document.getElementById('friend').classList.add("badge-success");
@@ -92,10 +99,10 @@
             <div class="px-2">
                 <form class="justify-content-center">
                     <div class="form-group">
-                        <input class="form-control" type="Text" id="name1" placeholder="Enter first name">
+                        <input class="form-control" type="Text" id="name1" placeholder="Enter first name" value="Aishwarya Rai">
                     </div>
                     <div class="form-group">
-                        <input class="form-control" type="Text" id="name2" placeholder="Enter second name">    
+                        <input class="form-control" type="Text" id="name2" placeholder="Enter second name" value="Abhishek Bachan">    
                     </div>
                     <div class="form-group"> 
                         <input type="Button" value="Click here to calculate" id="calBtn" onclick="calculateFlames()">
